@@ -1,1 +1,2 @@
-teste novo arquivo
+Teste novo arquivo.
+Este arquivo foi melhorado.
