@@ -1,0 +1,212 @@
+{
+  "info": {
+    "description": "API para a entidade Solicitação de Compra (purchaseRequest) para produtos TOTVS",
+    "version": "1.000",
+    "title": "PurchaseRequest",
+    "contact": {
+      "name": "T-Talk",
+      "url": "api.Totvs.com.br",
+      "email": "comiteintegracao@totvs.com.br"
+    },
+    "x-totvs": {
+      "transactionDefinition": {
+        "subType": "event",
+        "businessContentType": {
+          "type": "object",
+          "$ref": "#/definitions/purchaseRequestInfo"
+        },
+        "returnContentType": {
+          "type": "object",
+          "$ref": "https://raw.githubusercontent.com/totvs/ttalk-standard-message/master/jsonschema/schemas/types/ListOfInternalId_1_000.json#/definitions/ReturnContentWithModelType"
+        }
+      },
+      "messageDocumentation": {
+        "name": "Purchaserequest",
+        "description": "Solicitação de Compra",
+        "segment": "Serviços"
+      },
+      "productInformation": [
+        {
+          "product": "protheus",
+          "contact": "squad.suprimentos@totvs.com.br",
+          "description": "Cadastro de Solicitação de Compra",
+          "adapter": "crms980.prw"
+        }
+      ]
+    }
+  },
+  "definitions": {
+    "PagedPurchaseRequest": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/Paging"
+        },
+        {
+          "$ref": "#/definitions/PurchaseRequests"
+        }
+      ]
+    },
+    "PurchaseRequests": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "https://raw.githubusercontent.com/totvs/ttalk-standard-message/master/jsonschema/apis/types/totvsApiTypesBase.json#/definitions/Paging"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "items": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/purchaseRequestInfo"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "purchaseRequestInfo": {
+      "type": "object",
+      "properties": {
+        "branch": {
+          "type": "string",
+          "example": "D MG 01",
+          "description": "Filial",
+          "x-totvs": [
+            {
+              "product": "protheus",
+              "field": "SC1.C1_FILIAL",
+              "required": true,
+              "type": "char",
+              "length": "8",
+              "available": true,
+              "canUpdate": false
+            }
+          ]
+        },
+        "requestCode": {
+          "type": "string",
+          "description": "Número da Solicitação",
+          "x-totvs": [
+            {
+              "product": "protheus",
+              "field": "SC1.C1_NUM",
+              "required": true,
+              "type": "char",
+              "length": "6",
+              "available": true,
+              "canUpdate": true
+            }
+          ]
+        },
+        "productCode": {
+          "type": "string",
+          "description": "Código do Produto",
+          "x-totvs": [
+            {
+              "product": "protheus",
+              "field": "SC1.C1_PRODUTO",
+              "required": true,
+              "type": "char",
+              "length": "30",
+              "available": true,
+              "canUpdate": true
+            }
+          ]
+        },
+        "productDescription": {
+          "type": "string",
+          "description": "Descrição do Produto",
+          "x-totvs": [
+            {
+              "product": "protheus",
+              "field": "SC1.C1_DESCRI",
+              "required": true,
+              "type": "char",
+              "length": "30",
+              "available": true,
+              "canUpdate": true
+            }
+          ]
+        },
+        "needDate": {
+          "type": "string",
+          "format": "date",
+          "example": "20210101",
+          "description": "Data da necessidade",
+          "x-totvs": [
+            {
+              "product": "protheus",
+              "field": "C1_DATPRF",
+              "required": true,
+              "type": "date",
+              "length": "8",
+              "available": true,
+              "canUpdate": true
+            }
+          ]
+        }
+      }
+    },
+    "Paging": {
+      "type": "object",
+      "properties": {
+        "hasNext": {
+          "type": "boolean",
+          "example": false
+        }
+      }
+    },
+    "ErrorDetails": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/ErrorModel"
+        },
+        {
+          "$ref": "#/definitions/ErrorDetail"
+        }
+      ]
+    },
+    "ErrorModel": {
+      "type": "object",
+      "required": [
+        "code",
+        "message",
+        "detailedMessage"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Código identificador do erro."
+        },
+        "message": {
+          "type": "string",
+          "description": "Literal no idioma da requisição descrevendo o erro para o usuário."
+        },
+        "detailedMessage": {
+          "type": "string",
+          "format": "uri",
+          "description": "Mensagem técnica e mais detalhada do erro."
+        },
+        "helpUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "URI para documentação do erro."
+        }
+      }
+    },
+    "ErrorDetail": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ErrorModel"
+          }
+        }
+      }
+    }
+  }
+}
